@@ -1,0 +1,9 @@
+pandas
+torch
+torchvision
+Pillow
+transformers
+qdrant-client
+fastapi
+uvicorn
+python-multipart
