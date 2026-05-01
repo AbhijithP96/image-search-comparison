@@ -4,40 +4,45 @@ import numpy as np
 from qdrant_client import QdrantClient
 from io import BytesIO
 
-dino_processor, dino_model = baseline.get_models()
-clip_processor, clip_model = clip.get_models()
+from embedding import baseline, clip
 
-CLIENT = QdrantClient(path="hybrid_db")
+import config
 
 
-def get_top_5(image_bytes: bytes) -> list:
-    image = Image.open(BytesIO(image_bytes)).convert("RGB")
+class HybridSearcher:
+    def __init__(self):
+        self.dino_processor, self.dino_model = baseline.get_models()
+        self.clip_processor, self.clip_model = clip.get_models()
 
-    dino_embeddings = baseline.get_embeddings(image, dino_processor, dino_model)
-    clip_embeddings = clip.get_embeddings(image, clip_processor, clip_model)
+        self.client = QdrantClient(path=config.DB_DIR)
+        self.collection = config.HYBRID
 
-    # normalize the embeddings
-    dino_embeddings = dino_embeddings / np.linalg.norm(dino_embeddings)
-    clip_embeddings = clip_embeddings / np.linalg.norm(clip_embeddings)
+    def search(self, image_bytes: bytes, top_k: int = 5) -> list:
+        image = Image.open(BytesIO(image_bytes)).convert("RGB")
+        dino_emb = baseline.get_embeddings(image, self.dino_processor, self.dino_model)
+        clip_emb = clip.get_embeddings(image, self.clip_processor, self.clip_model)
 
-    # concatenate the embeddings
-    hybrid_embeddings = np.concatenate((dino_embeddings, clip_embeddings))
+        # normalize
+        dino_emb = dino_emb / np.linalg.norm(dino_emb)
+        clip_emb = clip_emb / np.linalg.norm(clip_emb)
+        hybrid_emb = np.concatenate((dino_emb, clip_emb))
 
-    results = CLIENT.query_points(
-        collection_name="hybrid",
-        query=hybrid_embeddings.tolist(),
-        limit=5,
-        with_payload=True,
-    ).points
+        # search result
+        results = self.client.query_points(
+            collection_name=self.collection,
+            query=hybrid_emb.tolist(),
+            limit=top_k,
+            with_payload=True,
+        ).points
+        return [res.id for res in results]
 
-    return [res.id for res in results]
+    def close(self):
+        self.client.close()
 
 
 if __name__ == "__main__":
-    # Example usage
+    searcher = HybridSearcher()
     with open("wikiArt/Abstract_Expressionism/mark-tobey_washington.jpg", "rb") as f:
         image_bytes = f.read()
-    top_5_ids = get_top_5(image_bytes)
-    print(top_5_ids)
-
-    CLIENT.close()
+    print(searcher.search(image_bytes))
+    searcher.close()

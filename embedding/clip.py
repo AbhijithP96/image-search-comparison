@@ -1,9 +1,11 @@
 from transformers import CLIPImageProcessor, CLIPModel
 import torch
 
-MODEL = "openai/clip-vit-base-patch32"
-DIMENSION = 512  # CLIP ViT-B/32 has a feature dimension of 512
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+import config
+
+MODEL = config.CLIP_MODEL
+DIMENSION = config.CLIP_DIM
+DEVICE = config.DEVICE
 
 
 def get_models():

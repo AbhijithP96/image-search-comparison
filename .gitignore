@@ -222,3 +222,5 @@ wikiArt/
 *.lock
 db/
 hybrid_db
+agg_db
+met_metadata.json

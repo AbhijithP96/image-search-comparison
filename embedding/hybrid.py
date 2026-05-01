@@ -9,6 +9,8 @@ from embedding import baseline, clip
 import argparse
 import numpy as np
 
+import config
+
 
 def get_args():
     parser = argparse.ArgumentParser("Baseline Model with DINO V2 for Indexing")
@@ -43,9 +45,9 @@ def main():
     size = baseline.DIMENSION + clip.DIMENSION
 
     # initialize qdrant collection
-    client = QdrantClient(path="hybrid_db")
+    client = QdrantClient(path=config.DB_DIR)
     client.create_collection(
-        collection_name="hybrid",
+        collection_name=config.HYBRID,
         vectors_config=VectorParams(size=size, distance=Distance.COSINE),
     )
 

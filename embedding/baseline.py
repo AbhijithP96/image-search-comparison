@@ -8,9 +8,11 @@ from PIL import Image
 from tqdm import tqdm
 from transformers import AutoImageProcessor, AutoModel
 
-MODEL = "facebook/dinov2-small"
-DIMENSION = 384  # DINO V2 small has a feature dimension of 384
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+import config
+
+MODEL = config.DINO_MODEL
+DIMENSION = config.DINO_DIM
+DEVICE = config.DEVICE
 
 
 def get_args():
@@ -62,9 +64,9 @@ def main():
     processor, model = get_models()
 
     # initialize qdrant collection
-    client = QdrantClient(path="db")
+    client = QdrantClient(path=config.DB_DIR)
     client.create_collection(
-        collection_name="baseline",
+        collection_name=config.BASE,
         vectors_config=VectorParams(size=DIMENSION, distance=Distance.COSINE),
     )
 
@@ -107,6 +109,8 @@ def main():
     print(f"Indexed Images: {indexed_count}")
     print(f"Skipped: {skipped}")
     print("Skipped Filenames \n", not_found)
+
+    client.close()
 
 
 if __name__ == "__main__":

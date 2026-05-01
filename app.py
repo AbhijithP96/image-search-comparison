@@ -1,8 +1,22 @@
 import uvicorn
-from fastapi import FastAPI, UploadFile, File
-from search import hybrid
+from fastapi import FastAPI, UploadFile, File, Request
+from search.baseline import BaselineSearcher
+from contextlib import asynccontextmanager
+import config
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.searcher = BaselineSearcher()
+    yield
+    app.state.searcher.close()
+
+
+app = FastAPI(
+    title="Image Retriever API",
+    version="1.0.0",
+    lifespan=lifespan,
+)
 
 
 @app.get("/")
@@ -11,12 +25,12 @@ def root():
 
 
 @app.post("/search")
-async def search_db(file: UploadFile = File(...)):
+async def search_db(request: Request, file: UploadFile = File(...)):
     image_bytes = await file.read()
-    ids = hybrid.get_top_5(image_bytes)
+    ids = request.app.state.searcher.search(image_bytes=image_bytes)
 
     return {"ids": ids}
 
 
 if __name__ == "__main__":
-    uvicorn.run(app)
+    uvicorn.run(app, host=config.API_HOST, port=config.API_PORT)
