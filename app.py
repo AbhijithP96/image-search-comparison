@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, UploadFile, File
-from search import baseline
+from search import hybrid
 
 app = FastAPI()
 
@@ -13,7 +13,7 @@ def root():
 @app.post("/search")
 async def search_db(file: UploadFile = File(...)):
     image_bytes = await file.read()
-    ids = baseline.get_top_5(image_bytes)
+    ids = hybrid.get_top_5(image_bytes)
 
     return {"ids": ids}
 

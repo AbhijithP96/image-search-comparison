@@ -1,4 +1,3 @@
-import argparse
 import torch
 import pandas as pd
 from pathlib import Path
@@ -6,11 +5,9 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
 from PIL import Image
 from tqdm import tqdm
-from transformers import AutoImageProcessor, AutoModel
-
-MODEL = "facebook/dinov2-small"
-DIMENSION = 384  # DINO V2 small has a feature dimension of 384
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from embedding import baseline, clip
+import argparse
+import numpy as np
 
 
 def get_args():
@@ -36,36 +33,20 @@ def get_args():
     return parser.parse_args()
 
 
-def get_models():
-    # Load the DINO V2 model and processor
-    processor = AutoImageProcessor.from_pretrained(MODEL)
-    model = AutoModel.from_pretrained(MODEL)
-    model.to(DEVICE)
-
-    return processor, model
-
-
-def get_embeddings(image, processor, model):
-    with torch.no_grad():
-        input = processor(image, return_tensors="pt").to(DEVICE)
-        output = model(**input)
-
-    # cls token from the last layer of DINO V2
-    embeddings = output.last_hidden_state[:, 0, :].squeeze(0).detach().cpu().numpy()
-    return embeddings
-
-
 def main():
     args = get_args()
 
     # Load the DINO V2 model and processor
-    processor, model = get_models()
+    dino_processor, dino_model = baseline.get_models()
+    clip_processor, clip_model = clip.get_models()
+
+    size = baseline.DIMENSION + clip.DIMENSION
 
     # initialize qdrant collection
-    client = QdrantClient(path="db")
+    client = QdrantClient(path="hybrid_db")
     client.create_collection(
-        collection_name="baseline",
-        vectors_config=VectorParams(size=DIMENSION, distance=Distance.COSINE),
+        collection_name="hybrid",
+        vectors_config=VectorParams(size=size, distance=Distance.COSINE),
     )
 
     # Load the index file
@@ -86,27 +67,31 @@ def main():
             not_found.append(row["filename"])
             continue
 
-        embeddings = get_embeddings(image, processor, model)
+        dino_embedding = baseline.get_embeddings(image, dino_processor, dino_model)
+        clip_embedding = clip.get_embeddings(image, clip_processor, clip_model)
 
-        # add to the vector db
-        client.upsert(
-            collection_name="baseline",
-            points=[
-                PointStruct(
-                    id=row["id"],
-                    vector=embeddings.tolist(),
-                    payload={
-                        "filename": row["filename"],
-                        "genre": row["genre"],
-                        "artist": row["artist"],
-                    },
-                )
-            ],
+        # normalize the embeddings
+        dino_embedding = dino_embedding / np.linalg.norm(dino_embedding)
+        clip_embedding = clip_embedding / np.linalg.norm(clip_embedding)
+
+        # concatenate the embeddings
+        hybrid_embedding = np.concatenate((dino_embedding, clip_embedding))
+
+        # create a point struct and upsert to qdrant
+        payload = {
+            "filename": row["filename"],
+            "genre": row["genre"],
+            "artist": row["artist"],
+        }
+        point = PointStruct(
+            id=row["id"], vector=hybrid_embedding.tolist(), payload=payload
         )
-
+        client.upsert(collection_name="hybrid", points=[point])
     print(f"Indexed Images: {indexed_count}")
     print(f"Skipped: {skipped}")
     print("Skipped Filenames \n", not_found)
+
+    client.close()
 
 
 if __name__ == "__main__":

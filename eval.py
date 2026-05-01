@@ -90,4 +90,20 @@ def eval():
 
 
 if __name__ == "__main__":
-    eval()
+    metrics = eval()
+
+    print("Precision@5:")
+    for id, score in metrics["precision_at_5"]:
+        print(f"ID: {id}, Precision@5: {score:.4f}")
+
+    print("\nAverage Precision@5:")
+    for id, score in metrics["average_precision_at_5"]:
+        print(f"ID: {id}, Average Precision@5: {score:.4f}")
+
+    print("\nAccuracy@1:")
+    for id, score in metrics["accuracy_at_1"]:
+        print(f"ID: {id}, Accuracy@1: {score:.4f}")
+
+    print("\nLatency:")
+    for id, score in metrics["latency"]:
+        print(f"ID: {id}, Latency: {score:.4f} seconds")

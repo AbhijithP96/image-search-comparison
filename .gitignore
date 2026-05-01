@@ -221,3 +221,4 @@ __marimo__/
 wikiArt/
 *.lock
 db/
+hybrid_db
