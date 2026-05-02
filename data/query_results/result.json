@@ -1,0 +1,102 @@
+{
+    "1": {
+        "query": "Abstract_Expressionism/mark-tobey_washington.jpg",
+        "result": [
+            "Expressionism/pierre-alechinsky_untitled-from-the-portfolio-with-the-grain-of-the-wood-au-fil-du-bois-7-1973.jpg",
+            "Abstract_Expressionism/jackson-pollock_moon-woman-1942(1).jpg",
+            "Abstract_Expressionism/jackson-pollock_mural.jpg",
+            "Abstract_Expressionism/jimmy-ernst_lookscape-1952.jpg",
+            "Abstract_Expressionism/frank-stella_guadalupe-island-caracara-1979.jpg"
+        ]
+    },
+    "2": {
+        "query": "Art_Nouveau_Modern/leon-bakst_scheherazade-negre-argent-1910.jpg",
+        "result": [
+            "Art_Nouveau_Modern/alexandre-benois_a-coachman-and-a-nurse-costume-design(1).jpg",
+            "Art_Nouveau_Modern/aleksandra-ekster_costume-design-for-theatre-moscow-1916.jpg",
+            "Expressionism/otto-dix_dream-of-the-sadist.jpg",
+            "Naive_Art_Primitivism/fernando-botero_saint-michael-archangel.jpg",
+            "Baroque/rembrandt_portrait-of-maerten-soolmans-1634.jpg"
+        ]
+    },
+    "3": {
+        "query": "Baroque/david-teniers-the-younger_kitchen-1644.jpg",
+        "result": [
+            "Realism/grigoriy-myasoyedov_escape-of-grigory-otrepyev-from-inn-on-the-lithuanian-border-1862.jpg",
+            "Baroque/adriaen-brouwer_peasants-smoking-and-drinking.jpg",
+            "Baroque/david-teniers-the-younger_landscape-with-a-family.jpg",
+            "Baroque/adriaen-brouwer_the-schlachtfest.jpg",
+            "Baroque/jan-steen_twin-birth-celebration-1668.jpg"
+        ]
+    },
+    "4": {
+        "query": "Cubism/wifredo-lam_the-jungle-1943.jpg",
+        "result": [
+            "Expressionism/jose-gutierrez-solana_masks-with-donkey.jpg",
+            "High_Renaissance/andrea-mantegna_holders-of-currencies-and-gold-jewelry-trophies-royal-armor-with-pilasters-1500.jpg",
+            "Symbolism/mikhail-vrubel_romeo-and-juliet.jpg",
+            "Fauvism/hans-hofmann_table-with-teakettle-green-vase-and-red-flowers-1936.jpg",
+            "Naive_Art_Primitivism/raoul-dufy_the-mexican-orchestra-1951.jpg"
+        ]
+    },
+    "5": {
+        "query": "Impressionism/john-atkinson-grimshaw_blue-belle-1877.jpg",
+        "result": [
+            "Rococo/maurice-quentin-de-la-tour_mademoiselle-salle.jpg",
+            "Rococo/william-hogarth_portrait-of-dr-benjamin-hoadly.jpg",
+            "Mannerism_Late_Renaissance/titian_cameria-daughter-of-suleiman-the-magnificent.jpg",
+            "Baroque/rembrandt_portrait-of-a-seated-woman.jpg",
+            "Pointillism/theo-van-rysselberghe_summer-afternoon-tea-in-the-garden-1901.jpg"
+        ]
+    },
+    "6": {
+        "query": "Minimalism/jean-degottex_dia-noir-v-1979.jpg",
+        "result": [
+            "Minimalism/ellsworth-kelly_square-form-1951.jpg",
+            "Color_Field_Painting/mark-rothko_black-on-maroon.jpg",
+            "Color_Field_Painting/mark-rothko_no-37-no-19-slate-blue-and-brown-on-plum-1958.jpg",
+            "Minimalism/conrad-marca-relli_m-4-66-1966.jpg",
+            "Art_Nouveau_Modern/egon-schiele_self-portrait-with-spread-fingers-1909.jpg"
+        ]
+    },
+    "7": {
+        "query": "Northern_Renaissance/albrecht-durer_jabach-altarpiece-piper-and-drummer-1504.jpg",
+        "result": [
+            "Early_Renaissance/fra-angelico_perugia-altarpiece-left-panel-1448.jpg",
+            "Northern_Renaissance/rogier-van-der-weyden_madonna-with-the-saints.jpg",
+            "Early_Renaissance/domenico-ghirlandaio_st-stephen-st-jacobo-st-peter.jpg",
+            "Early_Renaissance/piero-della-francesca_st-andrew-and-st-bernardino.jpg",
+            "Early_Renaissance/benozzo-gozzoli_st-anthony-of-padua.jpg"
+        ]
+    },
+    "8": {
+        "query": "Pointillism/georges-seurat_the-channel-of-gravelines-petit-fort-philippe-1890.jpg",
+        "result": [
+            "Pointillism/georges-seurat_the-port-of-honfleur-1886.jpg",
+            "Impressionism/eugene-boudin_the-port-of-dieppe-1888.jpg",
+            "Impressionism/eugene-boudin_bordeaux-a-cargonne-larmont.jpg",
+            "Fauvism/kees-van-dongen_la-baie-d-antibes.jpg",
+            "Pointillism/paul-signac_the-dogana-1904.jpg"
+        ]
+    },
+    "9": {
+        "query": "Pop_Art/andy-warhol_red-lenin.jpg",
+        "result": [
+            "Pop_Art/andy-warhol_marylin-red.jpg",
+            "Art_Nouveau_Modern/felix-vallotton_portrait-of-french-writer-auguste-villiers-de-l-isle-adam-1898.jpg",
+            "Art_Nouveau_Modern/felix-vallotton_portrait-of-french-pacifist-and-esperantist-gaston-moch-1898.jpg",
+            "Art_Nouveau_Modern/felix-vallotton_portrait-of-russian-writer-vladimir-galaktionovich-korolenko.jpg",
+            "Naive_Art_Primitivism/david-burliuk_portrait-of-woman.jpg"
+        ]
+    },
+    "10": {
+        "query": "Ukiyo_e/utagawa-kuniyoshi_yamamoto-takeru-no-mikoto-between-burning-grass.jpg",
+        "result": [
+            "Ukiyo_e/utagawa-kuniyoshi_raiko-tormented-by-the-earth-spider.jpg",
+            "Ukiyo_e/utagawa-sadatora_oguri-hangan-sukeshige-and-yamasaki.jpg",
+            "Ukiyo_e/utagawa-kuniyoshi_a-man-confronted-with-an-apparition-of-the-fox-goddess.jpg",
+            "Ukiyo_e/utagawa-kuniyoshi_sasaki-takatsuna-fording-the-uji-river.jpg",
+            "Ukiyo_e/tsukioka-yoshitoshi_the-fever.jpg"
+        ]
+    }
+}

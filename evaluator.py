@@ -187,4 +187,7 @@ def run_eval(mode: str = "single"):
 
 
 if __name__ == "__main__":
-    run_eval(mode="batch")
+    import sys
+
+    mode = sys.argv[1]
+    run_eval(mode=mode)

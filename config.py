@@ -5,10 +5,11 @@ from pathlib import Path
 # Folder Paths
 WIKIART_DIR = Path("wikiArt")
 DB_DIR = Path("db")
+DB_DIR.mkdir(exist_ok=True, parents=True)
 
 # Dataser CSV
-INDEX_FILE = Path("dataset") / "csv" / "index_set.csv"
-QUERY_FILE = Path("dataset") / "csv" / "query_set.csv"
+INDEX_FILE = Path("data") / "csv" / "index_set.csv"
+QUERY_FILE = Path("data") / "csv" / "query_set.csv"
 
 # API url
 API_HOST = "localhost"

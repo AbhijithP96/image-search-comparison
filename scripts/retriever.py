@@ -1,5 +1,6 @@
 import requests
 import argparse
+import json
 import pandas as pd
 from pathlib import Path
 
@@ -36,23 +37,40 @@ class Retriever:
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "--image", "-i", required=True, type=str, help="Path to image file"
-    )
+    parser.add_argument("--image", "-i", type=str, help="Path to image file")
+
+    parser.add_argument("--save", action="store_true")
 
     return parser.parse_args()
 
 
 def retrieve():
     args = get_args()
-
-    image_path = args.image
-
     retriever = Retriever()
 
-    paths = retriever.search(image_path=image_path)
+    if not args.save:
 
-    print(*[f"{path}\n" for path in paths])
+        image_path = args.image
+        paths = retriever.search(image_path=image_path)
+
+        print(*[f"{path}\n" for path in paths])
+
+    else:
+        query_df = pd.read_csv(config.QUERY_FILE)
+
+        results = {}
+        for _, row in query_df.iterrows():
+            image_path = config.WIKIART_DIR / row["filename"]
+            paths = retriever.search(image_path=image_path)
+            results[row["id"]] = {
+                "query": row["filename"],
+                "result": paths,
+            }
+
+        with open("data/query_results/result.json", "w") as f:
+            json.dump(results, f, indent=4)
+
+        print("Results Saved to data/query_results/result.json")
 
 
 if __name__ == "__main__":

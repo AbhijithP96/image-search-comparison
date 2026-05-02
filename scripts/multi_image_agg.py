@@ -8,6 +8,7 @@ from embedding.baseline import get_models, get_embeddings
 
 DATA_DIR = Path("met")
 LABEL = DATA_DIR / "met.csv"
+Path("agg_db").mkdir(exist_ok=True, parents=True)
 CLIENT = QdrantClient(path="agg_db")
 
 processor, model = get_models()
@@ -127,6 +128,7 @@ def evaluate(label_field="class", top_k=2, client=None):
     mean_top1_pooled = np.mean(p_top1s)
     mean_p5_pooled = np.mean(p_p5s)
 
+    print(f"Results for top_k = {top_k}")
     print("=" * 55)
     print(f"Label field    : {label_field}")
     print(f"Queries        : {len(query_df)}")
@@ -137,19 +139,27 @@ def evaluate(label_field="class", top_k=2, client=None):
 
 
 if __name__ == "__main__":
-    df = get_index_images()
+    import sys
 
-    CLIENT.create_collection(
-        collection_name="pooled",
-        vectors_config=VectorParams(size=384, distance=Distance.COSINE),
-    )
+    if sys.argv[1] == "create":
+        df = get_index_images()
 
-    CLIENT.create_collection(
-        collection_name="single",
-        vectors_config=VectorParams(size=384, distance=Distance.COSINE),
-    )
+        CLIENT.create_collection(
+            collection_name="pooled",
+            vectors_config=VectorParams(size=384, distance=Distance.COSINE),
+        )
 
-    generate_avg_pooled_embed(df, CLIENT)
-    evaluate(client=CLIENT)
+        CLIENT.create_collection(
+            collection_name="single",
+            vectors_config=VectorParams(size=384, distance=Distance.COSINE),
+        )
+
+        generate_avg_pooled_embed(df, CLIENT)
+    elif sys.argv[1] == "eval":
+        evaluate(client=CLIENT, top_k=2)
+        evaluate(client=CLIENT, top_k=3)
+        evaluate(client=CLIENT, top_k=5)
+    else:
+        print("Not a valid argument. Provide Either create or eval.")
 
     CLIENT.close()
