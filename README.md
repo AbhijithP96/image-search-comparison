@@ -192,7 +192,7 @@ python -m scripts.retriever --save
 
 Ensure the api is running by executing `python app.py` before running the above command. This will save the retrieved results for all 10 query images into `data/query_results/result.json` as JSON files
 
-Note: This has alredy been done and the results are included in the repository for reference.
+Note: This has alredy been done and the [results](./data/query_results/result.json) are included in the repository for reference.
 
 ---
 
@@ -212,7 +212,11 @@ Evaluated over all 10 query images using `evaluator.py`.
 | Hybrid | 0.54 | 0.71 | 0.5 | 78.99 | DINOv2 + CLIP concat (896-d); richer representation, higher indexing cost |
 | Reranker | 0.56 | 0.67 | 0.5 | 613.94 | DINO retrieves top-10, CLIP reranks to top-5; highest quality, two-stage cost |
 
-> Add Reasoning Here.
+> Baseline & Hybrid: Hybrid achieves better P@5 and mAP@5 than Baseline, indicating that the CLIP features provide complimentary information to the DINOv2 embeddings, thereby improving retrieval quality. This might be beacuse CLIP captures conceptual information due to language supervision, while DINOv2 focuses on global visual semantics.
+
+> Baseline & Reranker: Reranker achieves the best P@5, showing that CLIP-based reranking can effectively refine the initial DINO retreival results. However, the latency is significantly higher due to the two-stage process and the computational cost of CLIPScore.
+
+> Top-1 Accuracy of all methods is the same, suggesting that hard queries are very visually similar to the retrieved top-1 result. This shows that a larger sample size for the index set is required or fine-tuning the model on the domain-specific dataset might be required.
 
 ---
 
@@ -253,7 +257,11 @@ Retrieval uses DINOv2-small embeddings. Evaluation label is artwork **class** (e
 | Pooled |   3   |  0.75          | 0.25   |
 | Pooled |   5   |  0.75          | 0.15   |
 
-> Resoning Here
+> The top1 accuracy of both methods is the same. This means the aggregated embedding successfully preserves the dominant visual characterisitics of the artwork. 
+
+> The P@5 of the pooled model is significantly lower than the other. This is mainly because of the small sample size of the dataset rather than the pooling approach itself. The aggrgated embedding is one vector per artwork while single method has one vector per view. This effectively means the single method has a larger number of points to retrieve from. At smaller k, single method has larger pool of vectors to retrive from than the pooled method. At higher k, the pooled method has lesser vector. This effectively means bigger dataset for indexing and evaluation would give a better conclusion on the effectiveness of the pooling approach.
+
+> The decrease in P@5 with increasing k is expected as the retrieved set is larger and more likely to contain irrelevant results.
 
 ---
 
@@ -272,4 +280,8 @@ python evaluator.py batch
 | Single-query | 63.03 |
 | Batched (batch size=10) | 39.83 |
 
+> The batched retrieval approach significantly reduces latency compared to the single-query method. By processing multiple queries together, we can leverage parallelism and reduce overhead, leading to faster retrieval times.
+
+## Troubleshooting
+- If you encounter errors like `ValueError: Collection pooled already exists`. Then kill the python process and rerun the script. This is because qdrant in local mode does not allow multiple clients to access the same collection at the same time.
 
