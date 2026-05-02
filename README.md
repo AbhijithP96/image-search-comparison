@@ -12,6 +12,8 @@ Three retrieval strategies are implemented and evaluated:
 
 All embeddings are stored and queried via [Qdrant](https://qdrant.tech/) (local mode).
 
+ > Report on the project, including the approach, trade-offs , improvement etc is documented in the [report](doc/Artwork%20Similarity%20Search%20Report%20.pdf).
+
 ---
 
 ## 2. Contents
@@ -36,6 +38,8 @@ All embeddings are stored and queried via [Qdrant](https://qdrant.tech/) (local 
 ├── config.py             # Configuration constants (e.g. Qdrant collection names)
 ├── evaluator.py          # Evaluation script for retrieval metrics
 ├── requirements.txt
+|── db/                   # Qdrant data directory (collections stored here)
+|── docs/                 # Documentation and report
 ├── embedding/
 │   ├── __init__.py
 │   ├── baseline.py       # DINOv2 embedding + indexing
