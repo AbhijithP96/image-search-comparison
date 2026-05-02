@@ -40,6 +40,7 @@ All embeddings are stored and queried via [Qdrant](https://qdrant.tech/) (local 
 ├── requirements.txt
 |── db/                   # Qdrant data directory (collections stored here)
 |── docs/                 # Documentation and report
+|── wikiArt/              # wikiArt Dataset
 ├── embedding/
 │   ├── __init__.py
 │   ├── baseline.py       # DINOv2 embedding + indexing
@@ -115,11 +116,14 @@ pip install -r requirements.txt
 
 ### Download the dataset
 
+You can download the WikiArt Dataset from [Kaggle](https://www.kaggle.com/datasets/steubk/wikiart) and extract to the folder wikiArt, or you can run the following command:
+
 ```bash
 mkdir -p wikiArt
 
 python data/kaggle_download.py steubk/wikiart wikiArt
 ```
+Note: The above command require kaggle credentials to be set up. You can read it from [here](https://www.kaggle.com/docs/api#authentication)
 
 ### Build the index
 
@@ -226,7 +230,7 @@ Evaluated over all 10 query images using `evaluator.py`.
 
 Run via `scripts/multi_image_agg.py` on the [Met Museum](https://www.metmuseum.org/) collection (downloaded separately using `scripts/download_met.py`).
 
-Note: Sampled Images are already included in the repository for reference.
+Note: Sampled Images can be downloaded from [here](https://drive.google.com/file/d/1bPqCZO9u5sJVXMmpe3_oBuqG59tnxoqi/view?usp=drive_link) and put the subfolder to the `met` folder in the repo.
 
 Create a new Qdrant collection by running
 the following command once:
