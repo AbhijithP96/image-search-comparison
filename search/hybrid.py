@@ -1,10 +1,17 @@
+# search/hybrid.py
+"""
+Hybrid image similarity search combining DINOv2 and CLIP embeddings.
+
+Concatenates L2-normalized DINOv2 and CLIP embeddings
+into a single vector, then queries a Qdrant collection built on that joint representation
+to retrieve the top-k most similar images.
+"""
+
 from embedding import baseline, clip
 from PIL import Image
 import numpy as np
 from qdrant_client import QdrantClient
 from io import BytesIO
-
-from embedding import baseline, clip
 
 import config
 

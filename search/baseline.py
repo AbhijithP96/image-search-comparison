@@ -1,3 +1,11 @@
+# search/baseline.py
+"""
+Baseline image similarity search using DINOv2 embeddings and Qdrant.
+
+Provides single and batch query interfaces against a pre-built Qdrant collection,
+returning the top-k most similar image IDs ranked by cosine similarity of their
+CLS-token embeddings.
+"""
 import torch
 from PIL import Image
 from io import BytesIO

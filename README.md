@@ -111,6 +111,8 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+> **Note on PyTorch:** requirements.txt includes torch and torchvision but does not specify a CUDA build. On Linux, pip installs a CUDA-enabled build by default. On Windows, it installs the CPU-only variant. For GPU support on Windows, install PyTorch manually from [here](https://pytorch.org/) for your CUDA version and remove torch and torchvison from requirements.txt before running the above command.
+
 ### Download the dataset
 
 ```bash
@@ -283,5 +285,7 @@ python evaluator.py batch
 > The batched retrieval approach significantly reduces latency compared to the single-query method. By processing multiple queries together, we can leverage parallelism and reduce overhead, leading to faster retrieval times.
 
 ## Troubleshooting
+
 - If you encounter errors like `ValueError: Collection pooled already exists`. Then kill the python process and rerun the script. This is because qdrant in local mode does not allow multiple clients to access the same collection at the same time.
+- if you encounter `RuntimeError: Storage folder db is already accessed by another instance of Qdrant client.`. Then stop the running fastapi server and retry the command. 
 

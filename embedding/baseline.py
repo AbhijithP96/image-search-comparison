@@ -1,3 +1,11 @@
+"""
+DINOv2 embedding indexing pipeline for the baseline Qdrant collection.
+
+Loads a DINOv2 model, iterates over images listed in a CSV index file, extracts
+CLS-token embeddings, and upserts them into a Qdrant collection for subsequent
+similarity search. Exposes get_models() and get_embeddings() as reusable helpers
+for the search layer.
+"""
 import argparse
 import torch
 import pandas as pd

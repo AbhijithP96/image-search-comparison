@@ -1,3 +1,14 @@
+"""
+Evaluation script for comparing image similarity search methods.
+
+Computes P@5, mAP@5, and Top-1 accuracy by matching retrieved image genres against
+the query genre, and measures per-query latency. Supports two modes:
+  - single: evaluates Baseline, Hybrid, and Reranker sequentially per query.
+  - batch:  measures latency improvement of batched vs. single-query retrieval on baseline.
+
+Results are printed as Rich tables to the console.
+"""
+
 import time
 import pandas as pd
 import numpy as np

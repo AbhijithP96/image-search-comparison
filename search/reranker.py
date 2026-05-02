@@ -1,3 +1,10 @@
+"""
+Two-stage image search with CLIP-based reranking.
+
+Retrieves an initial candidate set using the DINOv2 baseline searcher, then reranks
+those candidates by cosine similarity of their CLIP image features against the query,
+returning the top-k_reranked most semantically similar results.
+"""
 from transformers import CLIPImageProcessor, CLIPModel
 import torch
 import pandas as pd

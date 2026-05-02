@@ -1,3 +1,10 @@
+"""
+CLIP embedding helpers for image feature extraction.
+
+Provides get_models() and get_embeddings() as reusable utilities for loading a CLIP
+model and extracting image feature vectors. Used by the hybrid searcher and reranker
+to produce semantic embeddings alongside DINOv2 structural embeddings.
+"""
 from transformers import CLIPImageProcessor, CLIPModel
 import torch
 

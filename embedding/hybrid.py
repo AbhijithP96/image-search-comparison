@@ -1,3 +1,11 @@
+"""
+Hybrid embedding indexing pipeline combining DINOv2 and CLIP for Qdrant.
+
+For each image, extracts L2-normalized DINOv2 and CLIP
+embeddings, concatenates them into a single joint vector, and upserts it into a
+Qdrant collection sized at DINOv2_dim + CLIP_dim for downstream hybrid search.
+"""
+
 import torch
 import pandas as pd
 from pathlib import Path

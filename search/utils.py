@@ -6,6 +6,7 @@ import config
 
 
 def embed_batch(image_byte_list, processor, model) -> list:
+    """Create a list of embeddings for batched retrieval"""
     images = [Image.open(BytesIO(b)).convert("RGB") for b in image_byte_list]
 
     inputs = processor(images, return_tensors="pt").to(config.DEVICE)
